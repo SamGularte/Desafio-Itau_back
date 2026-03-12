@@ -5,8 +5,10 @@ import desafio.itau.desafioItau.services.TransactionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Duration;
 import java.util.DoubleSummaryStatistics;
 
 @RestController
@@ -20,8 +22,9 @@ public class StatisticsController {
     }
 
     @GetMapping
-    public ResponseEntity<StatisticsResponse> getStatistics(){
-        DoubleSummaryStatistics stats = transactionService.getStatistics();
+    public ResponseEntity<StatisticsResponse> getStatistics(@RequestParam(defaultValue = "PT60S") String period){
+        Duration duration = Duration.parse(period);
+        DoubleSummaryStatistics stats = transactionService.getStatistics(duration);
         return  ResponseEntity.ok(new StatisticsResponse(stats));
     }
 }

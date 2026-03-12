@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.DoubleSummaryStatistics;
 import java.util.Queue;
@@ -35,11 +36,11 @@ public class TransactionService {
         logger.info("Queue Cleared");
     }
 
-    public DoubleSummaryStatistics getStatistics(){
-        logger.info("Calculating statistics!");
+    public DoubleSummaryStatistics getStatistics(Duration period){
+        logger.info("Calculating statistics for the last {}.", period);
 
         OffsetDateTime now = OffsetDateTime.now();
-        DoubleSummaryStatistics stats = transactions.stream().filter(t -> t.getDateTime().isAfter(now.minusSeconds(60))).mapToDouble(Transaction::getValue).summaryStatistics();
+        DoubleSummaryStatistics stats = transactions.stream().filter(t -> t.getDateTime().isAfter(now.minus(period))).mapToDouble(Transaction::getValue).summaryStatistics();
 
         logger.info("Statistics calculated!");
         return stats;
