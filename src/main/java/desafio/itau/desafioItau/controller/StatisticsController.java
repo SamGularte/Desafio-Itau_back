@@ -21,7 +21,7 @@ public class StatisticsController {
 
     @GetMapping
     public ResponseEntity<StatisticsResponse> getStatistics(){
-        DoubleSummaryStatistics stats = transactionService.getStatistcs();
+        DoubleSummaryStatistics stats = transactionService.getStatistics();
         return  ResponseEntity.ok(new StatisticsResponse(stats));
     }
 }
