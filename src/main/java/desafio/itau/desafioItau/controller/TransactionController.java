@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.OffsetDateTime;
-
 @RestController
 @RequestMapping("/transacao")
 public class TransactionController {
@@ -22,10 +20,6 @@ public class TransactionController {
 
     @PostMapping
     public ResponseEntity<Void> createTransaction(@Valid @RequestBody TransactionRequest request){
-        if(request.getDateTime().isAfter(OffsetDateTime.now()) || request.getValue() <= 0){
-            return ResponseEntity.unprocessableEntity().build();
-        }
-
         transactionService.addTransaction(new Transaction(request.getValue(), request.getDateTime()));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -22,9 +22,8 @@ public class StatisticsController {
     }
 
     @GetMapping
-    public ResponseEntity<StatisticsResponse> getStatistics(@RequestParam(defaultValue = "PT60S") String period){
-        Duration duration = Duration.parse(period);
-        DoubleSummaryStatistics stats = transactionService.getStatistics(duration);
+    public ResponseEntity<StatisticsResponse> getStatistics(@RequestParam(defaultValue = "PT60S") Duration period){
+        DoubleSummaryStatistics stats = transactionService.getStatistics(period);
         return  ResponseEntity.ok(new StatisticsResponse(stats));
     }
 }
